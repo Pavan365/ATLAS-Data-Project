@@ -294,9 +294,6 @@ def plot_data(data: dict) -> None:
     data : dict
         A dictionary containing awkward arrays of the processed data for the 
         Higgs to 4-Lepton decay process from the ATLAS Open Data project.
-
-    fraction : float
-        The fraction of the entire dataset used.
     """
 
     # Define the x-axis range of the plot.
