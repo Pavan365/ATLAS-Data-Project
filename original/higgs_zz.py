@@ -87,7 +87,7 @@ def main():
 
             # Start the clock.
             start_time = time.time()
-            print("\t" + subsample + ":")
+            print(f"\t{subsample}:")
 
             # Open the subsample's file.
             tree = uproot.open(path_subsample + ":mini")
@@ -97,8 +97,7 @@ def main():
 
             # Filter the valid events in the data.
             for data in tree.iterate(DATA_VARS + WEIGHT_VARS, library="ak", step_size=1000000,
-                                    entry_stop=(tree.num_entries * FRACTION)):
-                
+                                     entry_stop=(tree.num_entries * FRACTION)): 
                 # Store the number of events before reduction in the data.
                 num_events_before = len(data)
 
@@ -116,9 +115,8 @@ def main():
                 # If the data is from Monte Carlo simulation, perform Monte Carlo specific processing.
                 if "data" not in subsample:
                     # Calculate the Monte Carlo weights of the events.
-                    data["mc_weight"] = calc_mc_weight(data, subsample, WEIGHT_VARS)
-
                     # Calculate the final number of events.
+                    data["mc_weight"] = calc_mc_weight(data, subsample, WEIGHT_VARS)
                     num_events_after = sum(data["mc_weight"])
 
                 # Otherwise, proceed as normal.
@@ -128,8 +126,8 @@ def main():
 
                 # Stop the timer.
                 runtime = time.time() - start_time
-                print(f"\t Num Events Before: {num_events_before}" + 
-                      f"\t Num Events After: {num_events_after:.3f}" +
+                print(f"\t Events Before: {num_events_before}" + 
+                      f"\t Events After: {num_events_after:.3f}" +
                       f"\t Runtime: {runtime:.3f}")
 
                 # Save the current batch of data to the valid events list.
@@ -244,7 +242,8 @@ def calc_invariant_mass(lepton_pt: ak.Array, lepton_eta: ak.Array,
 
     return invariant_mass
 
-def calc_mc_weight(events: ak.Array, sample: str, weight_variables: list) -> ak.Array:
+
+def calc_mc_weight(events: ak.Array, subsample: str, weight_variables: list) -> ak.Array:
     """
     Calculates the Monte Carlo weight of an event.
 
@@ -253,8 +252,8 @@ def calc_mc_weight(events: ak.Array, sample: str, weight_variables: list) -> ak.
     events : ak.Array
         An awkward array containing the data from each event.
 
-    sample : str
-        The sample (decay process) being studied.
+    subsample : str
+        The subsample (decay process) being studied.
 
     weight_variables : list
         A list of the variables that contribute to the Monte Carlo weight of 
@@ -266,11 +265,14 @@ def calc_mc_weight(events: ak.Array, sample: str, weight_variables: list) -> ak.
         An awkward array containing the Monte Carlo weight of each event.
     """
 
-    # Get the information about the sample being studied.
-    sample_info = infofile.infos[sample]
+    # Get the information about the subsample being studied.
+    subsample_info = infofile.infos[subsample]
 
     # Calculate the cross section weight.
-    cross_section_weight = (LUMINOSITY * 1000 * sample_info["xsec"]) / (sample_info["red_eff"] * sample_info["sumw"])
+    numerator = LUMINOSITY * 1000 * subsample_info["xsec"]
+    denominator = subsample_info["red_eff"] * subsample_info["sumw"]
+
+    cross_section_weight = numerator / denominator
 
     # Create a variable to store the Monte Carlo weight.
     mc_weight = cross_section_weight
