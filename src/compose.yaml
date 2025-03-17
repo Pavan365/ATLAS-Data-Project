@@ -29,7 +29,7 @@ services:
     image: higgs-worker:latest
     networks:
       - higgs
-    restart: always
+    restart: on-failure
     stop_grace_period: 30s
     deploy:
       mode: replicated
