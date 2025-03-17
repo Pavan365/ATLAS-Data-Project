@@ -1,0 +1,47 @@
+# Define services.
+services:
+  # Define the RabbitMQ service.
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - higgs
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+  # Define the higgs-manager service.
+  manager:
+    image: higgs-manager:latest
+    networks:
+      - higgs
+    volumes:
+      - higgs-data:/app/output
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  # Define the higgs-worker service.
+  worker:
+    image: higgs-worker:latest
+    networks:
+      - higgs
+    restart: always
+    stop_grace_period: 30s
+    deploy:
+      mode: replicated
+      replicas: 5
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+# Define networks.
+networks:
+  higgs:
+
+# Define volumes.
+volumes:
+  higgs-data:
