@@ -25,7 +25,7 @@ MANAGER=$(docker wait src-manager-1)
 if [ "$MANAGER" -eq 0 ]
 then
     # Echo success message.
-    echo -e ""$GREEN"success"$WHITE": manager exited with code "$MANAGER""$NORMAL""
+    echo -e ""$CYAN"status"$WHITE": "$GREEN"success"$WHITE" - manager exited with code "$MANAGER""$NORMAL""
     STATE=""$GREEN"success"
     # Save figure.
     echo -e ""$CYAN"status"$WHITE": saving figure"$NORMAL""
@@ -35,7 +35,7 @@ then
     docker compose stop
 else
     # Echo error message.
-    echo -e ""$RED"error"$WHITE": manager exited with code "$MANAGER""$NORMAL""
+    echo -e ""$CYAN"status"$WHITE": "$RED"error"$WHITE" - manager exited with code "$MANAGER""$NORMAL""
     STATE=""$RED"error"
     # Stop containers.
     echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
