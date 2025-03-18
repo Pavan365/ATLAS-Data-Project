@@ -1,0 +1,20 @@
+# Higgs-Manager YAML
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: manager
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: manager
+        image: higgs-manager:latest
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: higgs-volume
+          mountPath: /app/output
+      volumes:
+      - name: higgs-volume
+        persistentVolumeClaim:
+          claimName: higgs-volume-claim
