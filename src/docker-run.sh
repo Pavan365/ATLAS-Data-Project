@@ -30,17 +30,15 @@ then
     # Save figure.
     echo -e ""$CYAN"status"$WHITE": saving figure"$NORMAL""
     docker cp src-manager-1:/app/output/higgs_zz.png ./output/higgs_zz_docker.png
-    # Stop containers.
-    echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
-    docker compose stop
 else
     # Echo error message.
     echo -e ""$CYAN"status"$WHITE": "$RED"error"$WHITE" - manager exited with code "$MANAGER""$NORMAL""
     STATE=""$RED"error"
-    # Stop containers.
-    echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
-    docker compose stop 
 fi
+
+# Stop containers.
+echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
+docker compose stop 
 
 # Echo end message.
 echo -e ""$CYAN"status"$WHITE": end ("$STATE""$WHITE")"$NORMAL""
