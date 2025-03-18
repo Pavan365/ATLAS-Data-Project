@@ -29,7 +29,7 @@ then
     STATE=""$GREEN"success"
     # Save figure.
     echo -e ""$CYAN"status"$WHITE": saving figure"$NORMAL""
-    docker cp src-manager-1:/app/output/higgs_zz.png ./output/
+    docker cp src-manager-1:/app/output/higgs_zz.png ./output/higgs_zz_docker.png
     # Stop containers.
     echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
     docker compose stop
