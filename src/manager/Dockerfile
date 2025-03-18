@@ -18,4 +18,7 @@ COPY ./common/infofile.py .
 # Copy the main manager script.
 COPY ./manager/higgs_manager.py .
 
+# Create a directory for output.
+RUN mkdir -p /app/output
+
 CMD ["python", "higgs_manager.py"]
