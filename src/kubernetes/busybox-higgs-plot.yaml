@@ -1,0 +1,17 @@
+# BusyBox-Higgs-Plot YAML
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-higgs-plot
+spec:
+  containers:
+  - name: busybox-higgs-plot
+    image: busybox
+    command: ["sleep", "infinity"]
+    volumeMounts:
+    - name: higgs-volume
+      mountPath: /output
+  volumes:
+  - name: higgs-volume
+    persistentVolumeClaim:
+      claimName: higgs-volume-claim
