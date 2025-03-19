@@ -5,7 +5,7 @@ PATH = "https://atlas-opendata.web.cern.ch/Legacy13TeV/4lep/"
 FRACTION = 1.0
 
 # Define the batch size of each data batch.
-BATCH_SIZE = 100000
+BATCH_SIZE = 25000
 
 # Define the samples to process from the ATLAS dataset.
 # Define the colours for plotting.
