@@ -8,6 +8,13 @@ spec:
   - name: busybox-higgs-plot
     image: busybox
     command: ["sleep", "infinity"]
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
     volumeMounts:
     - name: higgs-volume
       mountPath: /output

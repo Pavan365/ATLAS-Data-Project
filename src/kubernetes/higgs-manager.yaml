@@ -11,6 +11,13 @@ spec:
       - name: manager
         image: higgs-manager:latest
         imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "1Gi"
         volumeMounts:
         - name: higgs-volume
           mountPath: /app/output

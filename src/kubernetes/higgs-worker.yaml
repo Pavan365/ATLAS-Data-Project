@@ -17,3 +17,10 @@ spec:
       - name: worker
         image: higgs-worker:latest
         imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: "1"
+            memory: "1Gi"
+          limits:
+            cpu: "1"
+            memory: "2Gi"
