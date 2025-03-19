@@ -9,8 +9,8 @@ WHITE="\e[37m"
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
 
-# Confirm use of KEDA (autoscaler).
-read -p "$(echo -e ""$PURPLE"confirm"$WHITE": use KEDA (autoscaler)? [Y/N]: "$NORMAL"")" KEDA
+# Confirm use of KEDA (autoscaling).
+read -p "$(echo -e ""$PURPLE"confirm"$WHITE": use KEDA (autoscaling)? [Y/N]: "$NORMAL"")" KEDA
 KEDA=${KEDA^^}
 
 # Create the volume claim.
