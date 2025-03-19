@@ -27,9 +27,6 @@ def main():
     re-collecting data after a given termination period.
     """
 
-    # Batch the data that needs to be processed.
-    batches = data_batcher(config.SAMPLES, config.PATH, config.FRACTION, config.BATCH_SIZE)
-
     # Open a connection to the RabbitMQ server.
     connection = comms.open_connection(comms.RABBITMQ_SERVER, retries=6, wait_time=5)
 
@@ -37,6 +34,12 @@ def main():
     if connection is None:
         print("error: RabbitMQ connection failed")
         sys.exit(1)
+
+    # Batch the data that needs to be processed.
+    batches = data_batcher(config.SAMPLES, config.PATH, config.FRACTION, config.BATCH_SIZE)
+
+    # Print the number of batches.
+    print(f"status: number of batches - {len(batches)}")
 
     # Send the batches of data to the workers.
     comms.send_data(batches, connection, comms.TASKS_QUEUE)
