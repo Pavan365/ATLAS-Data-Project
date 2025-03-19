@@ -9,6 +9,10 @@ WHITE="\e[37m"
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
 
+# Confirm use of KEDA (autoscaler).
+read -p "$(echo -e ""$PURPLE"confirm"$WHITE": use KEDA (autoscaler)? [Y/N]: "$NORMAL"")" KEDA
+KEDA=${KEDA^^}
+
 # Create the volume claim.
 echo -e ""$CYAN"status"$WHITE": creating volume claim"$NORMAL""
 kubectl apply -f ./kubernetes/higgs-volume-claim.yaml
@@ -35,6 +39,18 @@ done
 echo -e ""$CYAN"status"$WHITE": starting manager and worker pods"$NORMAL""
 kubectl apply -f ./kubernetes/higgs-manager.yaml
 kubectl apply -f ./kubernetes/higgs-worker.yaml
+
+# If the user wants to use KEDA.
+if [[ "$KEDA" = "Y" || "$KEDA" = "YES" ]]
+then
+    # Wait for the workers to start.
+    kubectl wait --for=condition=available deployment/worker --timeout=60s
+    # Activate KEDA.
+    echo -e ""$CYAN"status"$WHITE": starting KEDA configuration"$NORMAL""
+    kubectl apply -f ./keda/keda-secret.yaml
+    kubectl apply -f ./keda/keda-auth.yaml
+    kubectl apply -f ./keda/keda-scaler.yaml
+fi
 
 # Wait for manager to finish.
 echo -e ""$CYAN"status"$WHITE": waiting for manager to finish"$NORMAL""
@@ -86,6 +102,16 @@ DELETE=${DELETE^^}
 # If the user wants to delete the pods.
 if [[ "$DELETE" = "Y" || "$DELETE" = "YES" ]]
 then
+    # Deactivate KEDA.
+    if [[ "$KEDA" = "Y" || "$KEDA" = "YES" ]]
+    then
+        # Activate KEDA.
+        echo -e ""$CYAN"status"$WHITE": deleting KEDA configuration"$NORMAL""
+        kubectl delete -f ./keda/keda-scaler.yaml
+        kubectl delete -f ./keda/keda-auth.yaml
+        kubectl delete -f ./keda/keda-secret.yaml
+    fi
+
     # Delete pods.
     echo -e ""$CYAN"status"$WHITE": deleting pods"$NORMAL""
     kubectl delete -f ./kubernetes/rabbitmq.yaml
