@@ -48,7 +48,7 @@ do
     echo -e ""$CYAN"status"$WHITE": checking manager state"$NORMAL""
     SUCCEEDED=$(kubectl get job manager --output=jsonpath="{.status.succeeded}") 
     FAILED=$(kubectl get job manager --output=jsonpath="{.status.failed}")
-    sleep 40
+    sleep 30
 done
 
 # Get the exit code of the manager.
