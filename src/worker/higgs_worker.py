@@ -39,7 +39,7 @@ def main():
     # Retrieve and process batches of data, until there are none left in the RabbitMQ queue.
     while True:
         # Attempt to retrieve a batch of data.
-        message_tag, batch = retrieve_batch(channel, comms.TASKS_QUEUE, retries=6, wait_time=5)
+        message_tag, batch = retrieve_batch(channel, comms.TASKS_QUEUE, retries=12, wait_time=5)
 
         # If a batch was not retrieved.
         if message_tag is None:
