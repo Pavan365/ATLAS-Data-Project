@@ -52,25 +52,34 @@ do
     echo -e ""$CYAN"status"$WHITE": checking manager state"$NORMAL""
     SUCCEEDED=$(kubectl get job manager --output=jsonpath="{.status.succeeded}") 
     FAILED=$(kubectl get job manager --output=jsonpath="{.status.failed}")
-    sleep 20
+    sleep 40
 done
+
+# Get the exit code of the manager.
+MANAGER_POD=$(kubectl get pods --selector=job-name=manager --output=jsonpath="{.items[0].metadata.name}")
+EXIT_CODE=$(kubectl get pod "$MANAGER_POD" --output=jsonpath="{.status.containerStatuses[0].state.terminated.exitCode}")
 
 # If the manager was successful.
 if [[ -n "$SUCCEEDED" && "$SUCCEEDED" -eq 1 ]]
 then
     # Echo success message.
-    echo -e ""$CYAN"status"$WHITE": "$GREEN"success"$WHITE" - manager succeeded"$NORMAL""
+    echo -e ""$CYAN"status"$WHITE": "$GREEN"success"$WHITE" - manager exited with code "$EXIT_CODE""$NORMAL""
     STATE=""$GREEN"success"
     # Save figure.
     echo -e ""$CYAN"status"$WHITE": saving figure"$NORMAL""
+    # Start BusyBox pod.
+    echo -e ""$CYAN"status"$WHITE": starting BusyBox pod"$NORMAL""
     kubectl apply -f ./kubernetes/busybox-higgs-plot.yaml
-    sleep 10
+    # Wait for the BusyBox pod to start.
+    kubectl wait --for=condition=ready=true pod busybox-higgs-plot
+    # Save figure.
     kubectl cp busybox-higgs-plot:/output/higgs_zz.png ./output/higgs_zz_kubernetes.png
+    echo -e ""$CYAN"status"$WHITE": saved figure"$NORMAL""
 # If the manager was unsuccessful.
 elif [[ -n "$FAILED" && "$FAILED" -eq 1 ]]
 then
     # Echo error message.
-    echo -e ""$CYAN"status"$WHITE": "$RED"error"$WHITE" - manager failed"$NORMAL""
+    echo -e ""$CYAN"status"$WHITE": "$RED"error"$WHITE" - manager exited with code "$EXIT_CODE""$NORMAL""
     STATE=""$RED"error"
 fi
 
