@@ -1,0 +1,22 @@
+# KEDA Scaler YAML.
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: keda-scaler
+  namespace: default
+spec:
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  pollingInterval: 1
+  cooldownPeriod: 10
+  scaleTargetRef:
+    name: worker
+  triggers:
+  - type: rabbitmq
+    metadata:
+      protocol: amqp
+      queueName: tasks
+      mode: QueueLength
+      value: "5"
+    authenticationRef:
+      name: keda-auth

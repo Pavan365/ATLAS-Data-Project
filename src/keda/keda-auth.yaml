@@ -1,0 +1,17 @@
+# KEDA Trigger-Auth YAML
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-auth
+  namespace: default
+spec:
+  secretTargetRef:
+  - parameter: host
+    name: keda-secret
+    key: host
+  - parameter: username
+    name: keda-secret
+    key: username
+  - parameter: password
+    name: keda-secret
+    key: password
