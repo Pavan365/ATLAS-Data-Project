@@ -8,11 +8,6 @@ NORMAL="\e[0m"
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
 
-# Build images.
-echo -e ""$CYAN"status"$WHITE": building images"$NORMAL""
-docker build -t higgs-manager:latest -f manager/Dockerfile .
-docker build -t higgs-worker:latest -f worker/Dockerfile .
-
 # Create the volume claim.
 echo -e ""$CYAN"status"$WHITE": creating volume claim"$NORMAL""
 kubectl apply -f ./kubernetes/higgs-volume-claim.yaml
