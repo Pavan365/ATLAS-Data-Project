@@ -1,9 +1,10 @@
 # Set message colours.
 CYAN="\e[36m"
 GREEN="\e[32m"
+NORMAL="\e[0m"
+PURPLE="\e[35m"
 RED="\e[31m"
 WHITE="\e[37m"
-NORMAL="\e[0m"
 
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
@@ -33,7 +34,19 @@ fi
 
 # Stop containers.
 echo -e ""$CYAN"status"$WHITE": stopping containers"$NORMAL""
-docker compose stop 
+docker compose stop
+
+# Confirm deletion of containers.
+read -p "$(echo -e ""$PURPLE"confirm"$WHITE": delete containers? [Y/N]: "$NORMAL"")" DELETE
+DELETE=${DELETE^^}
+
+# If the user wants to delete the containers.
+if [[ "$DELETE" = "Y" || "$DELETE" = "YES" ]]
+then
+    # Delete containers.
+    echo -e ""$CYAN"status"$WHITE": deleting containers"$NORMAL""
+    docker compose down
+fi
 
 # Echo end message.
 echo -e ""$CYAN"status"$WHITE": end ("$STATE""$WHITE")"$NORMAL""

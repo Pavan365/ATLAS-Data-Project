@@ -1,9 +1,10 @@
 # Set message colours.
 CYAN="\e[36m"
 GREEN="\e[32m"
+NORMAL="\e[0m"
+PURPLE="\e[35m"
 RED="\e[31m"
 WHITE="\e[37m"
-NORMAL="\e[0m"
 
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
@@ -78,16 +79,25 @@ then
     STATE=""$RED"error"
 fi
 
-# Delete pods.
-echo -e ""$CYAN"status"$WHITE": deleting pods"$NORMAL""
-kubectl delete -f ./kubernetes/rabbitmq.yaml
-kubectl delete -f ./kubernetes/rabbitmq-service.yaml
-kubectl delete -f ./kubernetes/higgs-manager.yaml
-kubectl delete -f ./kubernetes/higgs-worker.yaml
+# Confirm deletion of pods.
+read -p "$(echo -e ""$PURPLE"confirm"$WHITE": delete pods? [Y/N]: "$NORMAL"")" DELETE
+DELETE=${DELETE^^}
 
-if [[ -n "$SUCCEEDED" && "$SUCCEEDED" -eq 1 ]]
+# If the user wants to delete the pods.
+if [[ "$DELETE" = "Y" || "$DELETE" = "YES" ]]
 then
-    kubectl delete -f ./kubernetes/busybox-higgs-plot.yaml
+    # Delete pods.
+    echo -e ""$CYAN"status"$WHITE": deleting pods"$NORMAL""
+    kubectl delete -f ./kubernetes/rabbitmq.yaml
+    kubectl delete -f ./kubernetes/rabbitmq-service.yaml
+    kubectl delete -f ./kubernetes/higgs-manager.yaml
+    kubectl delete -f ./kubernetes/higgs-worker.yaml
+
+    # Delete BusyBox pod.
+    if [[ -n "$SUCCEEDED" && "$SUCCEEDED" -eq 1 ]]
+    then
+        kubectl delete -f ./kubernetes/busybox-higgs-plot.yaml
+    fi
 fi
 
 # Echo end message.

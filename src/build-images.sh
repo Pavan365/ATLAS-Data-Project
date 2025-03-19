@@ -1,9 +1,7 @@
 # Set message colours.
 CYAN="\e[36m"
-GREEN="\e[32m"
-RED="\e[31m"
-WHITE="\e[37m"
 NORMAL="\e[0m"
+WHITE="\e[37m"
 
 # Echo start message.
 echo -e ""$CYAN"status"$WHITE": start"$NORMAL""
