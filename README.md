@@ -138,6 +138,9 @@ $ ./build-images.sh
 > The batch size of each batch of data can be set in the ```./src/common/config.py``` file.
 > Ensure the Docker container images are rebuilt after changing the batch size.
 
+> [!IMPORTANT]
+> The figure outputted and saved from the workflows is saved in the ```./src/output``` folder.
+
 ### Docker Workflow
 #### Commands
 + To use the ***Docker Workflow***, run the following commands.
