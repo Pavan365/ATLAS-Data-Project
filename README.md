@@ -45,7 +45,6 @@ t \bar{t} \rightarrow l^{+} l^{-} + X
 $$
 
 #### Final Figure
-<br>
 <p align=center>
     <image src="original/higgs_zz.png" alt="final figure" width=500>
 </p>
@@ -153,7 +152,6 @@ $ ./docker-run.sh
 
 #### Output
 + The output should be as shown below.
-<br>
 <p align=center>
     <image src="docs/docker-workflow.png" alt="docker workflow" width=800>
 </p>
@@ -177,7 +175,6 @@ $ confirm: use KEDA (autoscaling)? [Y/N]: N
 
 #### Output
 + The output should be as shown below.
-<br>
 <p align=center>
     <image src="docs/kubernetes-static-workflow.png" alt="kubernetes static workflow" width=800>
 </p>
@@ -205,7 +202,6 @@ $ confirm: use KEDA (autoscaling)? [Y/N]: Y
 
 #### Output
 + The output should be as shown below.
-<br>
 <p align=center>
     <image src="docs/kubernetes-keda-workflow.png" alt="kubernetes KEDA workflow" width=800>
 </p>
