@@ -203,6 +203,9 @@ $ confirm: use KEDA (autoscaling)? [Y/N]: Y
 > The starting number of worker replicas can be set in the ```./src/kubernetes/higgs-worker.yaml``` file.
 > It is recommended to set the starting number of worker replicas to **1** with this workflow.
 
+> [!IMPORTANT]
+> The minimum and maximum number of worker replicas can be set in the ```./src/keda/keda-scaler.yaml``` file.
+
 #### Output
 + The output should be as shown below.
 <p align=center>
